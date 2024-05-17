@@ -7,8 +7,8 @@ import {
 } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
 import { $Enums } from '@prisma/client';
+import { Article } from 'models/article.dto';
 import { User } from 'models/user.dto';
-import { Article } from 'modules/article/article';
 import { Action } from 'modules/users/action.enum';
 
 type Subjects = InferSubjects<typeof Article | typeof User> | 'all';
@@ -17,7 +17,7 @@ export type AppAbility = Ability<[Action, Subjects]>;
 
 @Injectable()
 export class CaslAbilityFactory {
-  createForUser(user: User) {
+  createForUser(user: Pick<User, 'id' | 'roles'>) {
     const { can, cannot, build } = new AbilityBuilder<
       Ability<[Action, Subjects]>
     >(Ability as AbilityClass<AppAbility>);
@@ -30,7 +30,7 @@ export class CaslAbilityFactory {
 
     can(Action.Update, Article, { authorId: user.id });
 
-    cannot(Action.Delete, Article, { isPublished: true });
+    cannot(Action.Delete, Article, { published: true });
 
     return build({
       // Read https://casl.js.org/v6/en/guide/subject-type-detection#use-classes-as-subject-types for details

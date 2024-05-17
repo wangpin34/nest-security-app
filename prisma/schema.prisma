@@ -41,6 +41,7 @@ model Article {
   content   String
   authorId  String
   author    User     @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  published Boolean  @default(false)
   createdAt DateTime
   updatedAt DateTime
 }

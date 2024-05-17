@@ -1,6 +1,6 @@
 export class Password {
-  userId: string;
+  readonly userId: string;
   password: string;
-  createdAt: Date;
+  readonly createdAt: Date;
   updatedAt: Date;
 }

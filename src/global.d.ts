@@ -4,6 +4,7 @@ declare namespace Express {
     context: {
       userId: string;
       userEmail: string;
+      userRoles: string[];
     }; // Replace `any` with the type of your context
   }
 }

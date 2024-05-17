@@ -1,8 +1,8 @@
 import { $Enums } from '@prisma/client';
 export class User {
-  id: string;
-  email: string;
+  readonly id: string;
+  readonly email: string;
   roles: $Enums.Role[];
-  createdAt: Date;
+  readonly createdAt: Date;
   updatedAt: Date;
 }
