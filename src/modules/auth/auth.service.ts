@@ -1,5 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { $Enums } from '@prisma/client';
 import { UsersService } from 'modules/users/users.service';
 @Injectable()
 export class AuthService {
@@ -8,16 +9,26 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(username: string, pass: string) {
-    const user = await this.usersService.findOne(username);
-    if (user?.password !== pass) {
-      throw new UnauthorizedException();
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, ...result } = user;
-    const payload = { sub: user.userId, username: user.username };
+  async signUp(email: string, password: string) {
+    const user = await this.usersService.create({
+      email,
+      roles: [$Enums.Role.User],
+      password,
+    });
+    return user;
+  }
+
+  async signIn(email: string, pass: string) {
+    const user = await this.usersService.findByEmail(email);
+    const id = user.id;
+    this.usersService.isPasswordValid(id, pass);
+    const payload = {
+      sub: user.id,
+      username: user.username,
+      email: user.email,
+    };
     return {
-      user: result,
+      user,
       access_token: await this.jwtService.signAsync(payload),
     };
   }

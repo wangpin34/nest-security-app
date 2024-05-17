@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Request } from 'express';
 import { CaslAbilityFactory } from 'modules/casl/casl-ability.factory';
 import { Action } from 'modules/users/action.enum';
 import { UsersService } from 'modules/users/users.service';
@@ -26,8 +27,9 @@ export class ArticleService {
     private caslAbilityFactory: CaslAbilityFactory,
     private usersService: UsersService,
   ) {}
-  async getArticle(id: number, _user) {
-    const user = await this.usersService.findOne(_user.username);
+  async getArticleById(id: string, req: Request) {
+    const text = req.context.user;
+    const user = await this.usersService.findBy(_user.username);
     const article = articles.find((article) => article.id === id);
     const ability = this.caslAbilityFactory.createForUser(user);
     if (ability.can(Action.Read, article)) {
@@ -39,14 +41,7 @@ export class ArticleService {
   async updateArticle(id: number, _user) {
     const user = await this.usersService.findOne(_user.username);
     const article = articles.find((article) => article.id === id);
-    console.log(
-      `article:`,
-      article,
-      `user:`,
-      user,
-      `article.authorId == user.userId`,
-      user.userId === article.authorId,
-    );
+
     const ability = this.caslAbilityFactory.createForUser(user);
     if (ability.can(Action.Update, article)) {
       return article;

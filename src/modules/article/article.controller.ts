@@ -3,9 +3,11 @@ import {
   Get,
   Param,
   Put,
+  Req,
   Request,
   UseGuards,
 } from '@nestjs/common';
+
 import { AuthGuard } from 'modules/auth/auth.guard';
 import { ArticleService } from './article.service';
 
@@ -14,7 +16,7 @@ export class ArticleController {
   constructor(private readonly articleService: ArticleService) {}
   @UseGuards(AuthGuard)
   @Get(':id')
-  getArticle(@Param('id') id: string, @Request() req) {
+  getArticle(@Param('id') id: string, @Req() req) {
     console.log(`user:`, req.user);
     return this.articleService.getArticle(parseInt(id), req.user);
   }
