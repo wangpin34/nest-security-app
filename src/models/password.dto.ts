@@ -1,4 +1,4 @@
-export class Password {
+export interface Password {
   readonly userId: string;
   password: string;
   readonly createdAt: Date;

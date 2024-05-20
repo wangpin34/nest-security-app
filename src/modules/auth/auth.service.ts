@@ -21,7 +21,7 @@ export class AuthService {
   async signIn(email: string, pass: string) {
     const user = await this.usersService.findByEmail(email);
     const id = user.id;
-    this.usersService.isPasswordValid(id, pass);
+    await this.usersService.isPasswordValid(id, pass);
     const payload = {
       sub: user.id,
       username: user.username,

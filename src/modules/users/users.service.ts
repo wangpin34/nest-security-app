@@ -25,7 +25,7 @@ export class UsersService {
   }
 
   async isPasswordValid(userId: string, password: string) {
-    this.prismaService.userPassword.findFirstOrThrow({
+    return this.prismaService.userPassword.findFirstOrThrow({
       where: {
         userId,
         password,
