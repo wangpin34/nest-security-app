@@ -47,7 +47,7 @@ export class AuthController {
   async signIn(@Body() signInDto: Record<string, any>, @Res() res: Response) {
     try {
       const result = await this.authService.signIn(
-        signInDto.username,
+        signInDto.email,
         signInDto.password,
       );
       return res.status(HttpStatus.OK).json(result);

@@ -13,8 +13,6 @@ type Subjects =
   | InferSubjects<Article | typeof Article | typeof User | User>
   | 'all';
 
-//export type AppAbility = Ability<[Action, Subjects]>;
-
 @Injectable()
 export class CaslAbilityFactory {
   createForUser(user: Pick<User, 'id' | 'roles'>) {
@@ -36,10 +34,5 @@ export class CaslAbilityFactory {
       },
     );
     return ability;
-    // return build({
-    //   // Read https://casl.js.org/v6/en/guide/subject-type-detection#use-classes-as-subject-types for details
-    //   detectSubjectType: (item) =>
-    //     item.constructor as ExtractSubjectType<Subjects>,
-    // });
   }
 }
